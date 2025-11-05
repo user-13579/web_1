@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
+import { AuthProvider } from "@/context/AuthContext";
+import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
+import PwaInit from "@/components/PwaInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +29,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="theme-color" content="#111111" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-paper min-h-screen flex flex-col`}
       >
-        {children}
+        <LanguageProvider>
+          <AuthProvider>
+            <Header />
+            <main className="mx-auto max-w-6xl px-4 py-8 flex-1 w-full relative theme-brown">
+              {children}
+            </main>
+            <Footer />
+            <PwaInit />
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

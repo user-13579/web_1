@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['@payos/node'],
+  serverExternalPackages: ['@payos/node', 'firebase-admin'],
   images: {
     remotePatterns: [
       {
@@ -23,12 +23,10 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better performance
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
-    // Make optional email dependencies external to avoid build errors
-    // These are only imported conditionally at runtime
     if (isServer) {
       config.externals = config.externals || [];
-      // These are optional dependencies - only used if env vars are set
-      // Making them external prevents webpack from trying to bundle them
+      // Keep these server-only packages external so webpack doesn't bundle them
+      config.externals.push('@payos/node', 'firebase-admin');
       config.resolve.fallback = {
         ...config.resolve.fallback,
         nodemailer: false,

@@ -9,10 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@payos/node": "^2.0.3",
     "firebase": "^12.5.0",
+    "firebase-admin": "^13.6.0",
+    "server-only": "^0.0.1",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "resend": "^6.4.2",
     "stripe": "^19.2.0"
   },
   "devDependencies": {

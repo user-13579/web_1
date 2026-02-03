@@ -25,8 +25,14 @@ const nextConfig: NextConfig = {
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals = config.externals || [];
-      // Keep these server-only packages external so webpack doesn't bundle them
-      config.externals.push('@payos/node', 'firebase-admin');
+      // Externalize firebase-admin (and subpaths) and @payos/node so webpack doesn't try to resolve them
+      config.externals.push((data: { request?: string }, callback: (err?: Error | null, result?: string) => void) => {
+        const request = data.request;
+        if (request === '@payos/node' || request?.startsWith('firebase-admin') === true) {
+          return callback(null, 'commonjs ' + request);
+        }
+        callback();
+      });
       config.resolve.fallback = {
         ...config.resolve.fallback,
         nodemailer: false,
